@@ -1,5 +1,5 @@
-import { Movie } from "../../core/entities/movie.entiti";
-import { Result } from "../interface/movie-db.responses";
+import { FullMovie, Movie } from '../../core/entities/movie.entiti';
+import { MovieDB, Result } from "../interface/movie-db.responses";
 
 export class MovieMapper {
     static fromMovieDBResultToEntity(result: Result): Movie {
@@ -12,5 +12,23 @@ export class MovieMapper {
             poster: `https://image.tmdb.org/t/p/w500${result.poster_path}`,
             backdrop: `https://image.tmdb.org/t/p/w500${result.backdrop_path}`
         }
+    }
+
+    static fromMovieDBToEntity(movie: MovieDB): FullMovie {
+        return {
+            id: movie.id,
+            title: movie.title,
+            description: movie.overview,
+            relaseDate: new Date(movie.release_date),
+            rating: movie.vote_average,
+            poster: `https://image.tmdb.org/t/p/w500${movie.poster_path}`,
+            backdrop: `https://image.tmdb.org/t/p/w500${movie.backdrop_path}`,
+            generes: movie.genres.map(genre => genre.name),
+            duration: movie.runtime,
+            budget: movie.budget,
+            originalTitle: movie.original_title,
+            productionCompanies: movie.production_companies.map(company => company.name),
+        }
+
     }
 }
